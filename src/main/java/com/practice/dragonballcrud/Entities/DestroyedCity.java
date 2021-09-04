@@ -15,10 +15,10 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
-public class DestroyedCities {
+public class DestroyedCity {
 
     @Id
-    long destroyedCitiesId;
+    int destroyedCitiesId;
     City destroyedCities;
 
     @ManyToOne

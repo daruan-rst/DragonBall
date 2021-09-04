@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class City {
 
     @Id
-    long cityId;
+    int cityId;
     String cityName;
     long population;
     float longitude;

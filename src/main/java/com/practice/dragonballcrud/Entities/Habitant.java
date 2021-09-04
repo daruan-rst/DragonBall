@@ -1,6 +1,6 @@
 package com.practice.dragonballcrud.Entities;
 
-import com.practice.dragonballcrud.Enums.Race;
+import com.practice.dragonballcrud.Enums.Races;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,9 +18,9 @@ import javax.persistence.Table;
 public class Habitant {
 
     @Id
-    long id;
+    int id;
     String name;
-    Race race;
+    Races race;
     int powerLevel;
     boolean alive;
 
