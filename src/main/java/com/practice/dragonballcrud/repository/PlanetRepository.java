@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface PlanetRepository extends JpaRepository<Planet, String> {
 
-    List<Planet> findByHasDragonBalls(String planetName);
+    List<Planet> findByHasDragonBalls();
     List<Planet> findPlanetByPlanetPopulationGreaterThan(long Population);
+
 }

@@ -59,6 +59,19 @@ public class HabitantController {
             return ResponseEntity.ok(new HabitantResponse(habitant));
     }
 
+    @PutMapping("/kill/{id}")
+    public ResponseEntity<HabitantResponse> kill(
+            @PathVariable int id){
+        var habitant = habitantRepository.findById(id);
+        habitant.setAlive(false);
+        habitantRepository.save(habitant);
+        return ResponseEntity.ok(new HabitantResponse(habitant));
+    }
+
+    @DeleteMapping("Remove/{id}")
+    public ResponseEntity<HabitantResponse> remove(@PathVariable int id){
+        habitantRepository.deleteById(id);
+    return ResponseEntity.ok().build();}
 
 
 
