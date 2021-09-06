@@ -1,6 +1,6 @@
-package com.practice.dragonballcrud.Repository;
+package com.practice.dragonballcrud.repository;
 
-import com.practice.dragonballcrud.Entities.Planet;
+import com.practice.dragonballcrud.entities.Planet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

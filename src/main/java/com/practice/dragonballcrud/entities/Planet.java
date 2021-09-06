@@ -1,13 +1,12 @@
-package com.practice.dragonballcrud.Entities;
+package com.practice.dragonballcrud.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.ForeignKey;
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
@@ -15,12 +14,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
-public class DestroyedCity {
+@Entity
+public class Planet {
 
     @Id
-    int destroyedCitiesId;
-    City destroyedCities;
+    String planetName;
+    long planetPopulation;
+    boolean hasDragonBalls;
 
-    @ManyToOne
-    Planet planet;
 }
