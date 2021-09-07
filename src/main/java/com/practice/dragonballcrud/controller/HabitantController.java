@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -19,6 +20,8 @@ import java.util.List;
 public class HabitantController {
 
     private final HabitantRepository habitantRepository;
+
+
 
     @GetMapping("/findByName/{name}")
     public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name){
@@ -31,13 +34,17 @@ public class HabitantController {
 
     @GetMapping("/findWhoIsAlive")
     public ResponseEntity<List<HabitantResponse>> findAlive(){
-        List aliveCitizen = habitantRepository.findHabitantsByAlive();
+        var aliveCitizen = habitantRepository.findAll().
+                stream().filter(Habitant::isAlive)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(HabitantResponse.convert(aliveCitizen));
     }
 
     @GetMapping("/findWhoIsDead")
     public ResponseEntity<List<HabitantResponse>> findWhoIsDead(){
-        List ghostCitizen = habitantRepository.findHabitantsByAliveFalse();
+        List ghostCitizen = habitantRepository.findAll().
+                stream().filter(h -> !h.isAlive())
+                .collect(Collectors.toList());
         return ResponseEntity.ok(HabitantResponse.convert(ghostCitizen));
     }
 
@@ -54,7 +61,8 @@ public class HabitantController {
     public ResponseEntity<HabitantResponse> update(
             @PathVariable int id,
             @RequestBody HabitantRequest habitantRequest){
-            Habitant habitant = habitantRequest.convert(habitantRequest);
+            Habitant habitant = habitantRepository.getById(id);
+                    habitantRequest.convert(habitantRequest);
             habitantRepository.save(habitant);
             return ResponseEntity.ok(new HabitantResponse(habitant));
     }
@@ -72,7 +80,4 @@ public class HabitantController {
     public ResponseEntity<HabitantResponse> remove(@PathVariable int id){
         habitantRepository.deleteById(id);
     return ResponseEntity.ok().build();}
-
-
-
 }
