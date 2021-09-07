@@ -22,11 +22,15 @@ public class Habitant {
 
     String name;
 
+    @Enumerated(EnumType.STRING)
     Races race;
+    @Column(name = "power_level")
     int powerLevel;
     boolean alive;
+
     @ManyToOne
-    City city;
+    @JoinColumn(name="cityId", referencedColumnName = "cityId")
+    City cityId;
 
     public Habitant(String name, Races race, int powerLevel, boolean alive) {
         this.name = name;

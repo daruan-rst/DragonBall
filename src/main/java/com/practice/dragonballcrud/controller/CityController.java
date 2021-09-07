@@ -6,7 +6,6 @@ import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.response.CityResponse;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

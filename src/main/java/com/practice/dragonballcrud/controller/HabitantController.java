@@ -48,6 +48,15 @@ public class HabitantController {
         return ResponseEntity.ok(HabitantResponse.convert(ghostCitizen));
     }
 
+    @GetMapping("/findByCity/{cityId}")
+    public ResponseEntity<List<HabitantResponse>> findByCity(@RequestParam int cityId){
+        try{
+            return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findHabitantsByCityId(cityId)));
+        } catch(ParamNotFoundException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/findByRace/{race}")
     public ResponseEntity<List<HabitantResponse>> findByRace(@RequestParam Races race){
         try{

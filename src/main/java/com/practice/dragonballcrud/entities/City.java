@@ -17,6 +17,7 @@ public class City {
 
     @Id
     @GeneratedValue
+    @Column(name = "cityId")
     int cityId;
     String cityName;
     long population;

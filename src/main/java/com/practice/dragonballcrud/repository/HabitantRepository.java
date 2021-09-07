@@ -14,5 +14,5 @@ public interface HabitantRepository extends JpaRepository<Habitant, Integer> {
     List<Habitant> findByRace(Races race);
     Habitant findById(int id);
     List<Habitant> findHabitantsByName(String name);
-
+    List<Habitant> findHabitantsByCityId(int cityId);
 }
