@@ -1,7 +1,11 @@
 package com.practice.dragonballcrud.request;
 
 import com.practice.dragonballcrud.entities.Planet;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class PlanetRequest {
 
     private String planetName;

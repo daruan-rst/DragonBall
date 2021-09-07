@@ -1,10 +1,12 @@
 package com.practice.dragonballcrud.response;
 
 import com.practice.dragonballcrud.entities.Planet;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class PlanetResponse {
 
     private final String planetName;
