@@ -4,6 +4,7 @@ package com.practice.dragonballcrud.controller;
 import com.practice.dragonballcrud.entities.Habitant;
 import com.practice.dragonballcrud.enums.Races;
 import com.practice.dragonballcrud.exceptions.ParamNotFoundException;
+import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.HabitantRepository;
 import com.practice.dragonballcrud.request.HabitantRequest;
 import com.practice.dragonballcrud.response.HabitantResponse;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class HabitantController {
 
     private final HabitantRepository habitantRepository;
+    private final CityRepository cityRepository;
 
 
     @GetMapping("/findByName/{name}")
@@ -57,6 +59,7 @@ public class HabitantController {
         }
     }
 
+
     @GetMapping("/findByRace/{race}")
     public ResponseEntity<List<HabitantResponse>> findByRace(@RequestParam Races race){
         try{
@@ -69,9 +72,9 @@ public class HabitantController {
     @PutMapping("/update/{id}")
     public ResponseEntity<HabitantResponse> update(
             @PathVariable int id,
-            @RequestBody HabitantRequest habitantRequest){
-            Habitant habitant = habitantRepository.getById(id);
-                    habitantRequest.convert(habitantRequest);
+            @RequestBody HabitantRequest habitantRequest)
+    {
+            Habitant habitant = habitantRequest.updateConvert(cityRepository, id);
             habitantRepository.save(habitant);
             return ResponseEntity.ok(new HabitantResponse(habitant));
     }

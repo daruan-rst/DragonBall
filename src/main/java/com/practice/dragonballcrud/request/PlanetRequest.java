@@ -12,4 +12,8 @@ public class PlanetRequest {
         return new Planet(this.planetName, this.planetPopulation, this.hasDragonBalls);
     }
 
+    public Planet updateConvert(String planetName){
+        return new Planet(planetName, this.planetPopulation, this.hasDragonBalls);
+    }
+
 }

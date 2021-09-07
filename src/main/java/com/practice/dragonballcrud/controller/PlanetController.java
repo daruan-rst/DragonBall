@@ -40,7 +40,7 @@ public class PlanetController {
         return ResponseEntity.ok(PlanetResponse.convert(planets));
     }
 
-    @DeleteMapping("Remove/{id}")
+    @DeleteMapping("remove/{id}")
     public ResponseEntity<PlanetResponse> remove(@PathVariable String planetName){
         planetRepository.deleteById(planetName);
         return ResponseEntity.ok().build();}
@@ -48,10 +48,10 @@ public class PlanetController {
     @PutMapping("/update/{id}")
     public ResponseEntity<PlanetResponse> update(
             @PathVariable String planetName,
-            @RequestBody PlanetRequest updatedPlanet){
-        Planet planet = updatedPlanet.convert(updatedPlanet);
-        planetRepository.save(planet);
-        return ResponseEntity.ok(new PlanetResponse(planet));
+            @RequestBody PlanetRequest planetRequest){
+        Planet updatedPlanet = planetRequest.updateConvert(planetName);
+        planetRepository.save(updatedPlanet);
+        return ResponseEntity.ok(new PlanetResponse(updatedPlanet));
     }
 
 

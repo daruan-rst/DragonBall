@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Habitant {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
 
     String name;
