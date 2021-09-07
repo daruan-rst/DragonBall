@@ -9,7 +9,9 @@ import com.practice.dragonballcrud.response.PlanetResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,18 @@ import java.util.stream.Collectors;
 public class PlanetController {
 
     final private PlanetRepository planetRepository;
+
+    @PostMapping
+    public ResponseEntity<PlanetResponse> createNewPlanet(
+            @RequestBody PlanetRequest planetRequest,
+            UriComponentsBuilder uriComponentsBuilder
+    ) {
+        Planet createdPlanet = planetRequest.convert();
+        planetRepository.save(createdPlanet);
+        URI uri = uriComponentsBuilder.path("/planet/{planetName}")
+                .buildAndExpand(createdPlanet.getPlanetName()).toUri();
+    return ResponseEntity.created(uri).body(new PlanetResponse(createdPlanet));}
+
 
     @GetMapping("/findAll")
     public ResponseEntity<List<PlanetResponse>> findAll(){

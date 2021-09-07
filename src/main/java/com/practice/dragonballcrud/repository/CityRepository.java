@@ -9,4 +9,5 @@ public interface CityRepository extends JpaRepository<City,Integer > {
 
     List<City> findCityByPopulationGreaterThan(long population);
     List<City> findCityByPlanetId(String planetName);
+
 }

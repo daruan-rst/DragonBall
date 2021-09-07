@@ -8,7 +8,7 @@ public class PlanetRequest {
     private long planetPopulation;
     private boolean hasDragonBalls;
 
-    public Planet convert(PlanetRequest planetRequest){
+    public Planet convert(){
         return new Planet(this.planetName, this.planetPopulation, this.hasDragonBalls);
     }
 

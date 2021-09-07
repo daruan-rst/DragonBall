@@ -10,7 +10,9 @@ import com.practice.dragonballcrud.response.CityResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,18 @@ public class CityController {
 
     final private CityRepository cityReposiory;
     final private PlanetRepository planetRepository;
+
+    @PostMapping
+    public ResponseEntity<CityResponse> createCity(
+            @RequestBody CityRequest cityRequest,
+            UriComponentsBuilder uriComponentsBuilder
+    ){
+        City createdCity = cityRequest.convert(planetRepository);
+        cityReposiory.save(createdCity);
+        URI uri = uriComponentsBuilder.path("/city/{cityId}")
+        .buildAndExpand(createdCity.getCityId()).toUri();
+        return ResponseEntity.created(uri).body(new CityResponse(createdCity));
+    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<CityResponse>> findAll() {

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,17 @@ public class HabitantController {
     private final HabitantRepository habitantRepository;
     private final CityRepository cityRepository;
 
+
+    @PostMapping
+    public ResponseEntity<HabitantResponse> createHabitant(
+            @RequestBody HabitantRequest habitantRequest,
+            UriComponentsBuilder uriComponentsBuilder
+    ){
+        Habitant createdHabitant = habitantRequest.convert(cityRepository);
+        URI uri = uriComponentsBuilder.path("/habitant/{id}")
+                .buildAndExpand(createdHabitant.getId()).toUri();
+        return ResponseEntity.created(uri).body(new HabitantResponse(createdHabitant));
+    }
 
     @GetMapping("/findByName/{name}")
     public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name){
