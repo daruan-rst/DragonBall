@@ -2,6 +2,7 @@ package com.practice.dragonballcrud.controller;
 
 
 import com.practice.dragonballcrud.entities.City;
+import com.practice.dragonballcrud.entities.Planet;
 import com.practice.dragonballcrud.exceptions.ParamNotFoundException;
 import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.PlanetRepository;
@@ -53,7 +54,9 @@ public class CityController {
         try {
             return ResponseEntity.ok(CityResponse
                     .convert(cityReposiory
-                    .findCityByPlanetId(planetName)));
+                    .findCityByPlanetId(planetRepository
+                            .findById(planetName)
+                            .get())));
         }catch(ParamNotFoundException e){
             return ResponseEntity.badRequest().build();
         }
