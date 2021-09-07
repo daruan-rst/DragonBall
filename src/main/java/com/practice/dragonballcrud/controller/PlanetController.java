@@ -49,17 +49,17 @@ public class PlanetController {
     }
 
     @GetMapping("/hasPopulationGreaterThan/{population}")
-    public ResponseEntity<List<PlanetResponse>> hasPopulationGreaterThan(long population){
+    public ResponseEntity<List<PlanetResponse>> hasPopulationGreaterThan(@PathVariable long population){
         List<Planet> planets = planetRepository.findPlanetByPlanetPopulationGreaterThan(population);
         return ResponseEntity.ok(PlanetResponse.convert(planets));
     }
 
-    @DeleteMapping("remove/{id}")
-    public ResponseEntity<PlanetResponse> remove(@PathVariable String planetName){
+    @DeleteMapping("remove/{planetName}")
+    public ResponseEntity<PlanetResponse> remove(@RequestParam String planetName){
         planetRepository.deleteById(planetName);
         return ResponseEntity.ok().build();}
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{planetName}")
     public ResponseEntity<PlanetResponse> update(
             @PathVariable String planetName,
             @RequestBody PlanetRequest planetRequest){
