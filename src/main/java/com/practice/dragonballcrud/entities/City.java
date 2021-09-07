@@ -18,22 +18,16 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cityId")
-    int cityId;
-    String cityName;
-    long population;
-    float longitude;
-    float latitude;
+    private int cityId;
+    private String cityName;
+    private long population;
+    private float longitude;
+    private float latitude;
 
     @ManyToOne
     @JoinColumn(name = "planetId" , referencedColumnName = "planet_name")
-    Planet planetId;
+    private Planet planetId;
 
 
-    public City(String cityName, long population, float longitude, float latitude) {
-        this.cityName = cityName;
-        this.population = population;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
 
 }

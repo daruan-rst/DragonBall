@@ -18,25 +18,19 @@ public class Habitant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    int id;
-
-    String name;
+    private int id;
+    private String name;
 
     @Enumerated(EnumType.STRING)
-    Races race;
+    private Races race;
     @Column(name = "power_level")
-    int powerLevel;
-    boolean alive;
+    private int powerLevel;
+    private boolean alive;
 
     @ManyToOne
     @JoinColumn(name="cityId", referencedColumnName = "cityId")
-    City cityId;
+    private City cityId;
 
-    public Habitant(String name, Races race, int powerLevel, boolean alive) {
-        this.name = name;
-        this.race = race;
-        this.powerLevel = powerLevel;
-        this.alive = alive;
-    }
+
 
 }

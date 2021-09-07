@@ -12,12 +12,12 @@ import java.util.Optional;
 @Setter
 public class CityRequest {
 
-    int id;
-    String cityName;
-    long population;
-    float longitude;
-    float latitude;
-    String planetName;
+    private int id;
+    private String cityName;
+    private long population;
+    private float longitude;
+    private float latitude;
+    private String planetName;
 
     public City convert(PlanetRepository planetRepository){
         Optional<Planet> planetOptional = planetRepository.findById(planetName);

@@ -20,8 +20,8 @@ public class Planet {
 
     @Id
     @Column(name="planet_name")
-    String planetName;
-    long planetPopulation;
-    boolean hasDragonBalls;
+    private String planetName;
+    private long planetPopulation;
+    private boolean hasDragonBalls;
 
 }

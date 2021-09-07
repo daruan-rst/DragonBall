@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 
 public class CityResponse {
 
-    int cityId;
-    String cityName;
-    long population;
-    float longitude;
-    float latitude;
-    Planet planetId;
+    private final int cityId;
+    private final String cityName;
+    private final long population;
+    private final float longitude;
+    private final float latitude;
+    private final Planet planetId;
 
     public CityResponse(City city){
         this.cityId = city.getCityId();

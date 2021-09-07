@@ -12,12 +12,12 @@ import java.util.Optional;
 @Setter
 public class HabitantRequest {
 
-    int id;
-    String name;
-    Races race;
-    int powerLevel;
-    boolean alive;
-    int cityId;
+    private int id;
+    private String name;
+    private Races race;
+    private int powerLevel;
+    private boolean alive;
+    private int cityId;
 
     public Habitant convert(CityRepository cityRepository){
         Optional<City> cityOptional = cityRepository.findById(cityId);

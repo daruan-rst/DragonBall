@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 public class PlanetResponse {
 
-    String planetName;
-    long planetPopulation;
-    boolean hasDragonBalls;
+    private final String planetName;
+    private final long planetPopulation;
+    private final boolean hasDragonBalls;
 
     public PlanetResponse (Planet planet){
         this.planetName = planet.getPlanetName();

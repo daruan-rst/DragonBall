@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 @Getter
 public class HabitantResponse {
 
-    int habitantId;
-    String name;
-    Races race;
-    int powerLevel;
-    boolean alive;
-    City cityId;
+    private final int habitantId;
+    private final String name;
+    private final Races race;
+    private final int powerLevel;
+    private final boolean alive;
+    private final City cityId;
 
     public HabitantResponse(Habitant habitant){
         this.habitantId = habitant.getId();
