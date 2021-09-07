@@ -10,6 +10,7 @@ import com.practice.dragonballcrud.response.HabitantResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 public class HabitantController {
 
     private final HabitantRepository habitantRepository;
-
 
 
     @GetMapping("/findByName/{name}")
