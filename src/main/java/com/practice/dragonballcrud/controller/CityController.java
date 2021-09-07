@@ -8,6 +8,7 @@ import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.PlanetRepository;
 import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.response.CityResponse;
+import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class CityController {
 
     final private CityRepository cityReposiory;
     final private PlanetRepository planetRepository;
+    final private PlanetService planetService;
 
     @PostMapping
     public ResponseEntity<CityResponse> createCity(
@@ -32,6 +34,7 @@ public class CityController {
     ){
         City createdCity = cityRequest.convert(planetRepository);
         cityReposiory.save(createdCity);
+        planetService.updatePlanetPopulation(createdCity.getPlanetId(), createdCity.getPopulation());
         URI uri = uriComponentsBuilder.path("/city/{cityId}")
         .buildAndExpand(createdCity.getCityId()).toUri();
         return ResponseEntity.created(uri).body(new CityResponse(createdCity));
@@ -80,6 +83,8 @@ public class CityController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+
 
 
 }

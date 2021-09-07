@@ -8,6 +8,8 @@ import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.HabitantRepository;
 import com.practice.dragonballcrud.request.HabitantRequest;
 import com.practice.dragonballcrud.response.HabitantResponse;
+import com.practice.dragonballcrud.service.CityService;
+import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,30 +26,38 @@ public class HabitantController {
 
     private final HabitantRepository habitantRepository;
     private final CityRepository cityRepository;
+    private final PlanetService planetService;
+    private final CityService cityService;
 
 
     @PostMapping
     public ResponseEntity<HabitantResponse> createHabitant(
             @RequestBody HabitantRequest habitantRequest,
             UriComponentsBuilder uriComponentsBuilder
-    ){
+    ) {
         Habitant createdHabitant = habitantRequest.convert(cityRepository);
+        habitantRepository.save(createdHabitant);
+        if (createdHabitant.isAlive()) {
+                updatePopulation(createdHabitant, 1);
+        }
         URI uri = uriComponentsBuilder.path("/habitant/{id}")
                 .buildAndExpand(createdHabitant.getId()).toUri();
         return ResponseEntity.created(uri).body(new HabitantResponse(createdHabitant));
     }
 
     @GetMapping("/findByName/{name}")
-    public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name){
-    List habitants = habitantRepository.findHabitantsByName(name);
-    return ResponseEntity.ok().body(HabitantResponse.convert(habitants));}
+    public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name) {
+        List habitants = habitantRepository.findHabitantsByName(name);
+        return ResponseEntity.ok().body(HabitantResponse.convert(habitants));
+    }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<HabitantResponse>> findAll(){
-        return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findAll()));}
+    public ResponseEntity<List<HabitantResponse>> findAll() {
+        return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findAll()));
+    }
 
     @GetMapping("/findWhoIsAlive")
-    public ResponseEntity<List<HabitantResponse>> findAlive(){
+    public ResponseEntity<List<HabitantResponse>> findAlive() {
         var aliveCitizen = habitantRepository.findAll().
                 stream().filter(Habitant::isAlive)
                 .collect(Collectors.toList());
@@ -55,7 +65,7 @@ public class HabitantController {
     }
 
     @GetMapping("/findWhoIsDead")
-    public ResponseEntity<List<HabitantResponse>> findWhoIsDead(){
+    public ResponseEntity<List<HabitantResponse>> findWhoIsDead() {
         List ghostCitizen = habitantRepository.findAll().
                 stream().filter(h -> !h.isAlive())
                 .collect(Collectors.toList());
@@ -63,20 +73,25 @@ public class HabitantController {
     }
 
     @GetMapping("/findByCity/{cityId}")
-    public ResponseEntity<List<HabitantResponse>> findByCity(@RequestParam int cityId){
-        try{
-            return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findHabitantsByCityId(cityId)));
-        } catch(ParamNotFoundException e){
+    public ResponseEntity<List<HabitantResponse>> findByCity(@RequestParam int cityId) {
+        try {
+            return ResponseEntity.ok(HabitantResponse
+                    .convert(habitantRepository
+                            .findHabitantsByCityId(cityRepository
+                                    .getById(cityId))));
+        } catch (ParamNotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
+
+
     }
 
 
     @GetMapping("/findByRace/{race}")
-    public ResponseEntity<List<HabitantResponse>> findByRace(@RequestParam Races race){
-        try{
+    public ResponseEntity<List<HabitantResponse>> findByRace(@RequestParam Races race) {
+        try {
             return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findByRace(race)));
-        } catch(ParamNotFoundException e){
+        } catch (ParamNotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
     }
@@ -84,24 +99,30 @@ public class HabitantController {
     @PutMapping("/update/{id}")
     public ResponseEntity<HabitantResponse> update(
             @PathVariable int id,
-            @RequestBody HabitantRequest habitantRequest)
-    {
-            Habitant habitant = habitantRequest.updateConvert(cityRepository, id);
-            habitantRepository.save(habitant);
-            return ResponseEntity.ok(new HabitantResponse(habitant));
+            @RequestBody HabitantRequest habitantRequest) {
+        Habitant habitant = habitantRequest.updateConvert(cityRepository, id);
+        habitantRepository.save(habitant);
+        return ResponseEntity.ok(new HabitantResponse(habitant));
     }
 
     @PutMapping("/kill/{id}")
     public ResponseEntity<HabitantResponse> kill(
-            @PathVariable int id){
-        var habitant = habitantRepository.findById(id);
+            @PathVariable int id) {
+        Habitant habitant = habitantRepository.findById(id);
         habitant.setAlive(false);
+        updatePopulation(habitant, -1);
         habitantRepository.save(habitant);
         return ResponseEntity.ok(new HabitantResponse(habitant));
     }
 
     @DeleteMapping("Remove/{id}")
-    public ResponseEntity<HabitantResponse> remove(@PathVariable int id){
+    public ResponseEntity<HabitantResponse> remove(@PathVariable int id) {
         habitantRepository.deleteById(id);
-    return ResponseEntity.ok().build();}
+        return ResponseEntity.ok().build();
+    }
+
+    private void updatePopulation(Habitant habitant, long population){
+        cityService.updateCityPopulation(habitant.getCityId(), population);
+        planetService.updatePlanetPopulation(habitant.getCityId().getPlanetId(), population);
+    }
 }

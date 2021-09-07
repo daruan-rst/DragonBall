@@ -1,5 +1,6 @@
 package com.practice.dragonballcrud.repository;
 
+import com.practice.dragonballcrud.entities.City;
 import com.practice.dragonballcrud.entities.Habitant;
 import com.practice.dragonballcrud.enums.Races;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,5 @@ public interface HabitantRepository extends JpaRepository<Habitant, Integer> {
     List<Habitant> findByRace(Races race);
     Habitant findById(int id);
     List<Habitant> findHabitantsByName(String name);
-    List<Habitant> findHabitantsByCityId(int cityId);
+    List<Habitant> findHabitantsByCityId(City cityId);
 }

@@ -68,5 +68,10 @@ public class PlanetController {
         return ResponseEntity.ok(new PlanetResponse(updatedPlanet));
     }
 
+    public void updatePlanetPopulation(Planet planet, long population){
+        planet.setPlanetPopulation(planet.getPlanetPopulation() + population);
+        planetRepository.save(planet);
+    }
+
 
 }
