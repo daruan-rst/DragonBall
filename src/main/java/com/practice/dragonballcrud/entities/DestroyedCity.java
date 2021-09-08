@@ -11,16 +11,16 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table
+@Entity
 public class DestroyedCity {
 
     @Id
     private int destroyedCityId;
-
-    @OneToOne
-    @JoinColumn(name = "destroyed_city", referencedColumnName ="city_id")
-    private City destroyedCity;
+    private String cityName;
+    private long population;
+    private float longitude;
+    private float latitude;
 
 
     @ManyToOne

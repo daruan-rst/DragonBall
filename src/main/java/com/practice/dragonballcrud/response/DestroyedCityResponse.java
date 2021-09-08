@@ -14,12 +14,18 @@ import java.util.stream.Collectors;
 public class DestroyedCityResponse {
 
     private int destroyedCityId;
-    private City destroyedCity;
+    private String cityName;
+    private long population;
+    private float longitude;
+    private float latitude;
     private Planet planet;
 
     public DestroyedCityResponse(DestroyedCity cityThatWillBeDestroyed){
         this.destroyedCityId = cityThatWillBeDestroyed.getDestroyedCityId();
-        this.destroyedCity = cityThatWillBeDestroyed.getDestroyedCity();
+        this.cityName = cityThatWillBeDestroyed.getCityName();
+        this.population = cityThatWillBeDestroyed.getPopulation();
+        this.longitude = cityThatWillBeDestroyed.getLongitude();
+        this.latitude = cityThatWillBeDestroyed.getLatitude();
         this.planet = cityThatWillBeDestroyed.getPlanet();
     }
 

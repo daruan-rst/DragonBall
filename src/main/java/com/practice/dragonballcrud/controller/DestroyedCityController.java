@@ -4,6 +4,7 @@ import com.practice.dragonballcrud.entities.City;
 import com.practice.dragonballcrud.entities.DestroyedCity;
 import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.DestroyedCityRepository;
+import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.response.DestroyedCityResponse;
 import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class DestroyedCityController {
     public void destroyCity(@PathVariable int id) {
         DestroyedCity onceDestroyedCity = destroyedCityRepository.findById(id).get();
         if(planetService.aWishIsPossible(onceDestroyedCity.getPlanet())){
-            City rebornCity = onceDestroyedCity.getDestroyedCity();
+            City rebornCity = CityRequest.destroyedCityConvert(onceDestroyedCity);
             cityRepository.save(rebornCity);
             planetService.updatePlanetPopulation(rebornCity.getPlanetId(), rebornCity.getPopulation());
             remove(id);

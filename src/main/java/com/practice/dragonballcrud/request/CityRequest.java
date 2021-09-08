@@ -1,6 +1,7 @@
 package com.practice.dragonballcrud.request;
 
 import com.practice.dragonballcrud.entities.City;
+import com.practice.dragonballcrud.entities.DestroyedCity;
 import com.practice.dragonballcrud.entities.Planet;
 import com.practice.dragonballcrud.repository.PlanetRepository;
 import lombok.Getter;
@@ -34,6 +35,14 @@ public class CityRequest {
                 updatedCity.getLatitude(),
                 updatedCity.getPlanetId());}
 
+    public static City destroyedCityConvert(DestroyedCity destroyedCity){
+        return new City(destroyedCity.getDestroyedCityId(),
+                        destroyedCity.getCityName(),
+                        destroyedCity.getPopulation(),
+                        destroyedCity.getLongitude(),
+                        destroyedCity.getLatitude(),
+                        destroyedCity.getPlanet());
+    }
 
 
 }
