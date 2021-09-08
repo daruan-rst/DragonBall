@@ -17,8 +17,11 @@ public class DestroyedCity {
 
     @Id
     private int destroyedCityId;
+
     @OneToOne
+    @JoinColumn(name = "destroyed_city", referencedColumnName ="city_id")
     private City destroyedCity;
+
 
     @ManyToOne
     @JoinColumn(name = "planet", referencedColumnName = "planet_name")

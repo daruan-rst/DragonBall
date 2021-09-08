@@ -2,10 +2,12 @@ package com.practice.dragonballcrud.controller;
 
 
 
+import com.practice.dragonballcrud.entities.City;
 import com.practice.dragonballcrud.entities.Planet;
 import com.practice.dragonballcrud.repository.PlanetRepository;
 import com.practice.dragonballcrud.request.PlanetRequest;
 import com.practice.dragonballcrud.response.PlanetResponse;
+import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/planet")
+@RequestMapping("/planets")
 public class PlanetController {
 
     final private PlanetRepository planetRepository;
+    final private PlanetService planetService;
 
     @PostMapping
     public ResponseEntity<PlanetResponse> createNewPlanet(
@@ -48,16 +51,18 @@ public class PlanetController {
         return ResponseEntity.ok(PlanetResponse.convert(planetsHaveDragonBall));
     }
 
+    @GetMapping("/at-least-one-namek")
+    public String atLeastOneNamek(@RequestParam String planetName){
+         Planet planet = planetRepository.findById(planetName).get();
+        String resposta = (planetService.doesPlanetHaveAtLeastOneNamek(planet)? "Sim" : "não");
+        return resposta;
+    }
+
     @GetMapping("/hasPopulationGreaterThan/{population}")
     public ResponseEntity<List<PlanetResponse>> hasPopulationGreaterThan(@PathVariable long population){
         List<Planet> planets = planetRepository.findPlanetByPlanetPopulationGreaterThan(population);
         return ResponseEntity.ok(PlanetResponse.convert(planets));
     }
-
-    @DeleteMapping("remove/{planetName}")
-    public ResponseEntity<PlanetResponse> remove(@RequestParam String planetName){
-        planetRepository.deleteById(planetName);
-        return ResponseEntity.ok().build();}
 
     @PutMapping("/update/{planetName}")
     public ResponseEntity<PlanetResponse> update(
@@ -68,10 +73,11 @@ public class PlanetController {
         return ResponseEntity.ok(new PlanetResponse(updatedPlanet));
     }
 
-    public void updatePlanetPopulation(Planet planet, long population){
-        planet.setPlanetPopulation(planet.getPlanetPopulation() + population);
-        planetRepository.save(planet);
-    }
+    @DeleteMapping("remove/{planetName}")
+    public ResponseEntity<PlanetResponse> remove(@RequestParam String planetName){
+        planetRepository.deleteById(planetName);
+        return ResponseEntity.ok().build();}
+
 
 
 }

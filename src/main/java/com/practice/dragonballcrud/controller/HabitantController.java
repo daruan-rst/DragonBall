@@ -10,6 +10,7 @@ import com.practice.dragonballcrud.request.HabitantRequest;
 import com.practice.dragonballcrud.response.HabitantResponse;
 import com.practice.dragonballcrud.service.CityService;
 import com.practice.dragonballcrud.service.PlanetService;
+import com.practice.dragonballcrud.service.PopulationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/habitant")
+@RequestMapping("/habitants")
 public class HabitantController {
 
     private final HabitantRepository habitantRepository;
+    private final PopulationService populationService;
     private final CityRepository cityRepository;
-    private final PlanetService planetService;
-    private final CityService cityService;
+
 
 
     @PostMapping
@@ -38,7 +39,7 @@ public class HabitantController {
         Habitant createdHabitant = habitantRequest.convert(cityRepository);
         habitantRepository.save(createdHabitant);
         if (createdHabitant.isAlive()) {
-                updatePopulation(createdHabitant, 1);
+                populationService.updatePopulation(createdHabitant, 1);
         }
         URI uri = uriComponentsBuilder.path("/habitant/{id}")
                 .buildAndExpand(createdHabitant.getId()).toUri();
@@ -110,19 +111,25 @@ public class HabitantController {
             @PathVariable int id) {
         Habitant habitant = habitantRepository.findById(id);
         habitant.setAlive(false);
-        updatePopulation(habitant, -1);
+        populationService.updatePopulation(habitant, -1);
         habitantRepository.save(habitant);
         return ResponseEntity.ok(new HabitantResponse(habitant));
     }
 
-    @DeleteMapping("Remove/{id}")
+    @PutMapping("/wishBackToLife/{id}")
+    public ResponseEntity<HabitantResponse> makeAWish(
+            @PathVariable int id) {
+        Habitant habitant = habitantRepository.findById(id);
+        populationService.wishForSomeoneBackToLife(habitant);
+        return ResponseEntity.ok(new HabitantResponse(habitant));
+    }
+
+    @DeleteMapping("remove/{id}")
     public ResponseEntity<HabitantResponse> remove(@PathVariable int id) {
+        populationService.updatePopulation(habitantRepository.findById(id), -1);
         habitantRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    private void updatePopulation(Habitant habitant, long population){
-        cityService.updateCityPopulation(habitant.getCityId(), population);
-        planetService.updatePlanetPopulation(habitant.getCityId().getPlanetId(), population);
-    }
+
 }

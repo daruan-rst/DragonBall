@@ -9,6 +9,7 @@ import com.practice.dragonballcrud.repository.PlanetRepository;
 import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.request.DestroyedCityRequest;
 import com.practice.dragonballcrud.response.CityResponse;
+import com.practice.dragonballcrud.service.CityService;
 import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,13 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/city")
+@RequestMapping("/cities")
 public class CityController {
 
     final private CityRepository cityReposiory;
     final private PlanetRepository planetRepository;
     final private PlanetService planetService;
+    final private CityService cityService;
     final private DestroyedCityRepository destroyedCityRepository;
 
     @PostMapping
@@ -42,19 +44,26 @@ public class CityController {
         return ResponseEntity.created(uri).body(new CityResponse(createdCity));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/find-all")
     public ResponseEntity<List<CityResponse>> findAll() {
         List<City> allCities = cityReposiory.findAll();
         return ResponseEntity.ok(CityResponse.convert(allCities));
     }
 
-    @GetMapping("/hasPopulationGreaterThan/{population}")
+    @GetMapping("/at-least-one-namek")
+    public String atLeastOneNamek(@RequestParam int cityId){
+        City city = cityReposiory.findById(cityId).get();
+        String resposta = (cityService.doesThisCityHaveAtLeastOneNamek(city)? "Sim" : "não");
+        return resposta;
+    }
+
+    @GetMapping("/has-population-greater-than/{population}")
     public ResponseEntity<List<CityResponse>> hasPopulationGreaterThan(@RequestParam long population) {
         List<City> cities = cityReposiory.findCityByPopulationGreaterThan(population);
         return ResponseEntity.ok(CityResponse.convert(cities));
     }
 
-    @GetMapping("/findByPlanet/{planetName}")
+    @GetMapping("/find-by-planet/{planetName}")
     public ResponseEntity<List<CityResponse>> findByPlanet(@RequestParam String planetName){
         try {
             return ResponseEntity.ok(CityResponse
@@ -65,12 +74,6 @@ public class CityController {
         }catch(ParamNotFoundException e){
             return ResponseEntity.badRequest().build();
         }
-    }
-
-    @DeleteMapping("Remove/{id}")
-    public ResponseEntity<CityResponse> remove(@PathVariable int id) {
-        cityReposiory.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping("update/{id}")
@@ -86,14 +89,17 @@ public class CityController {
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping("/destroyCity/{id}")
+    @DeleteMapping("remove/{id}")
+    public ResponseEntity<CityResponse> remove(@PathVariable int id) {
+        cityReposiory.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/destroy-city/{id}")
     public ResponseEntity<CityResponse> destroyCity(@PathVariable int id){
         City destroyedCity = cityReposiory.findById(id).get();
         destroyedCityRepository.save(new DestroyedCityRequest().
                 convert(destroyedCity));
         planetService.updatePlanetPopulation(destroyedCity.getPlanetId(), -destroyedCity.getPopulation());
         return remove(id);}
-
-
-
 }

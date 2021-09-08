@@ -16,8 +16,8 @@ import javax.persistence.*;
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "cityId")
+    @GeneratedValue
+    @Column(name = "city_id")
     private int cityId;
     private String cityName;
     private long population;
@@ -25,9 +25,7 @@ public class City {
     private float latitude;
 
     @ManyToOne
-    @JoinColumn(name = "planetId" , referencedColumnName = "planet_name")
+    @JoinColumn(name = "planet_id" , referencedColumnName = "planet_name")
     private Planet planetId;
-
-
 
 }

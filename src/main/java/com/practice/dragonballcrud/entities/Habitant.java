@@ -28,7 +28,7 @@ public class Habitant {
     private boolean alive;
 
     @ManyToOne
-    @JoinColumn(name="cityId", referencedColumnName = "cityId")
+    @JoinColumn(name="city_id", referencedColumnName = "city_id")
     private City cityId;
 
 
