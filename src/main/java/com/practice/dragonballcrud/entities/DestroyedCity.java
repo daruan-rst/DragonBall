@@ -5,21 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table
 public class DestroyedCity {
 
     @Id
-    int destroyedCitiesId;
-    City destroyedCities;
+    private int destroyedCityId;
+    @OneToOne
+    private City destroyedCity;
 
     @ManyToOne
-    Planet planet;
+    @JoinColumn(name = "planet", referencedColumnName = "planet_name")
+    private Planet planet;
 }

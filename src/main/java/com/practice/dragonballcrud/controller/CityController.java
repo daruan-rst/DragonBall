@@ -2,11 +2,12 @@ package com.practice.dragonballcrud.controller;
 
 
 import com.practice.dragonballcrud.entities.City;
-import com.practice.dragonballcrud.entities.Planet;
 import com.practice.dragonballcrud.exceptions.ParamNotFoundException;
 import com.practice.dragonballcrud.repository.CityRepository;
+import com.practice.dragonballcrud.repository.DestroyedCityRepository;
 import com.practice.dragonballcrud.repository.PlanetRepository;
 import com.practice.dragonballcrud.request.CityRequest;
+import com.practice.dragonballcrud.request.DestroyedCityRequest;
 import com.practice.dragonballcrud.response.CityResponse;
 import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @AllArgsConstructor
@@ -26,6 +27,7 @@ public class CityController {
     final private CityRepository cityReposiory;
     final private PlanetRepository planetRepository;
     final private PlanetService planetService;
+    final private DestroyedCityRepository destroyedCityRepository;
 
     @PostMapping
     public ResponseEntity<CityResponse> createCity(
@@ -84,6 +86,13 @@ public class CityController {
         return ResponseEntity.badRequest().build();
     }
 
+    @DeleteMapping("/destroyCity/{id}")
+    public ResponseEntity<CityResponse> destroyCity(@PathVariable int id){
+        City destroyedCity = cityReposiory.findById(id).get();
+        destroyedCityRepository.save(new DestroyedCityRequest().
+                convert(destroyedCity));
+        planetService.updatePlanetPopulation(destroyedCity.getPlanetId(), -destroyedCity.getPopulation());
+        return remove(id);}
 
 
 
