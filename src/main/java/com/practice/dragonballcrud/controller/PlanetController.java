@@ -37,13 +37,13 @@ public class PlanetController {
     return ResponseEntity.created(uri).body(new PlanetResponse(createdPlanet));}
 
 
-    @GetMapping("/findAll")
+    @GetMapping("/find-all")
     public ResponseEntity<List<PlanetResponse>> findAll(){
         List<Planet> allPlanets = planetRepository.findAll();
         return ResponseEntity.ok(PlanetResponse.convert(allPlanets));
     }
 
-    @GetMapping("/hasDragonBall")
+    @GetMapping("/has-dragonBall")
     public ResponseEntity<List<PlanetResponse>> hasDragonBall(){
         List<Planet> planetsHaveDragonBall = planetRepository.findAll()
                 .stream().filter(Planet::isHasDragonBalls)
@@ -51,14 +51,8 @@ public class PlanetController {
         return ResponseEntity.ok(PlanetResponse.convert(planetsHaveDragonBall));
     }
 
-    @GetMapping("/at-least-one-namek")
-    public String atLeastOneNamek(@RequestParam String planetName){
-         Planet planet = planetRepository.findById(planetName).get();
-        String resposta = (planetService.doesPlanetHaveAtLeastOneNamek(planet)? "Sim" : "não");
-        return resposta;
-    }
 
-    @GetMapping("/hasPopulationGreaterThan/{population}")
+    @GetMapping("/has-population-greater-than/{population}")
     public ResponseEntity<List<PlanetResponse>> hasPopulationGreaterThan(@PathVariable long population){
         List<Planet> planets = planetRepository.findPlanetByPlanetPopulationGreaterThan(population);
         return ResponseEntity.ok(PlanetResponse.convert(planets));

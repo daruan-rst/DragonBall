@@ -46,18 +46,18 @@ public class HabitantController {
         return ResponseEntity.created(uri).body(new HabitantResponse(createdHabitant));
     }
 
-    @GetMapping("/findByName/{name}")
+    @GetMapping("/find-by-name/{name}")
     public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name) {
         List habitants = habitantRepository.findHabitantsByName(name);
         return ResponseEntity.ok().body(HabitantResponse.convert(habitants));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/find-all")
     public ResponseEntity<List<HabitantResponse>> findAll() {
         return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findAll()));
     }
 
-    @GetMapping("/findWhoIsAlive")
+    @GetMapping("/find-who-is-alive")
     public ResponseEntity<List<HabitantResponse>> findAlive() {
         var aliveCitizen = habitantRepository.findAll().
                 stream().filter(Habitant::isAlive)
@@ -65,7 +65,7 @@ public class HabitantController {
         return ResponseEntity.ok(HabitantResponse.convert(aliveCitizen));
     }
 
-    @GetMapping("/findWhoIsDead")
+    @GetMapping("/find-who-is-dead")
     public ResponseEntity<List<HabitantResponse>> findWhoIsDead() {
         List ghostCitizen = habitantRepository.findAll().
                 stream().filter(h -> !h.isAlive())
@@ -73,7 +73,7 @@ public class HabitantController {
         return ResponseEntity.ok(HabitantResponse.convert(ghostCitizen));
     }
 
-    @GetMapping("/findByCity/{cityId}")
+    @GetMapping("/find-by-city/{cityId}")
     public ResponseEntity<List<HabitantResponse>> findByCity(@RequestParam int cityId) {
         try {
             return ResponseEntity.ok(HabitantResponse
@@ -88,7 +88,7 @@ public class HabitantController {
     }
 
 
-    @GetMapping("/findByRace/{race}")
+    @GetMapping("/find-by-race/{race}")
     public ResponseEntity<List<HabitantResponse>> findByRace(@RequestParam Races race) {
         try {
             return ResponseEntity.ok().body(HabitantResponse.convert(habitantRepository.findByRace(race)));
@@ -116,7 +116,7 @@ public class HabitantController {
         return ResponseEntity.ok(new HabitantResponse(habitant));
     }
 
-    @PutMapping("/wishBackToLife/{id}")
+    @PutMapping("/wish-back-to-life/{id}")
     public ResponseEntity<HabitantResponse> makeAWish(
             @PathVariable int id) {
         Habitant habitant = habitantRepository.findById(id);

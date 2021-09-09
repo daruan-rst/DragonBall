@@ -50,12 +50,6 @@ public class CityController {
         return ResponseEntity.ok(CityResponse.convert(allCities));
     }
 
-    @GetMapping("/at-least-one-namek")
-    public String atLeastOneNamek(@RequestParam int cityId){
-        City city = cityReposiory.findById(cityId).get();
-        String resposta = (cityService.doesThisCityHaveAtLeastOneNamek(city)? "Sim" : "não");
-        return resposta;
-    }
 
     @GetMapping("/has-population-greater-than/{population}")
     public ResponseEntity<List<CityResponse>> hasPopulationGreaterThan(@RequestParam long population) {
