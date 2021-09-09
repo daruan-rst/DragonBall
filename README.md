@@ -10,7 +10,7 @@
      |__..-'__||__\   |___\ __.:-.._..-'_|\___||____..-/  |__|--""____/
      
 ```
-This is a simple API inspired in the manga and anime written by Akira Toryiama (or at least how i remember it to be)
+This is a simple API inspired by the manga and anime written by Akira Toryiama (or at least how i remember it to be)
 
 Here are the challenges I set myself to do while making this project:
 
@@ -33,7 +33,7 @@ So there should be at least these three main entities
   - When a villan shows up a city (if not more than that) is always destroyed. A @DeleteMapping should be made so that not only the City is removed from the City table, but also created in the DestroyedCity one
   - The villains also kill a lot of people. There must be a method to kill any habitant;
   - When all the dragon balls are gathered in the same place, a dragon can be summoned (but remember The dragon will only be summoned if a Namek asks for it). 
-   When the dragon appears, any wish can be grantted. Cities that were once destroyed can come back back and people that once were killed be brought back to life. But remember: wishes can only happen if all the conditions are satisfied
+   When the dragon appears, any wish can be grantted. Cities that were once destroyed can come back and people that once were killed be brought back to life. But remember: wishes can only happen if all the conditions are satisfied
 
 
  
