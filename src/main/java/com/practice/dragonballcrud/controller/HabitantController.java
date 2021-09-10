@@ -46,6 +46,14 @@ public class HabitantController {
         return ResponseEntity.created(uri).body(new HabitantResponse(createdHabitant));
     }
 
+    @PostMapping("/someone-is-born/{name}")
+    public ResponseEntity<HabitantResponse> someoneIsBorn(@PathVariable String name, UriComponentsBuilder uriComponentsBuilder){
+        HabitantRequest bornPersonRequest = populationService.generateRandomHabitant(name);
+        return createHabitant(
+            bornPersonRequest,
+            uriComponentsBuilder
+    );}
+
     @GetMapping("/find-by-name/{name}")
     public ResponseEntity<List<HabitantResponse>> findByName(@PathVariable String name) {
         List habitants = habitantRepository.findHabitantsByName(name);

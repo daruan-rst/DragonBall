@@ -6,8 +6,14 @@ import com.practice.dragonballcrud.entities.Habitant;
 import com.practice.dragonballcrud.enums.Races;
 import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.HabitantRepository;
+
+import com.practice.dragonballcrud.repository.PlanetRepository;
+import com.practice.dragonballcrud.response.CityResponse;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -19,6 +25,7 @@ public class CityService {
 
     final private CityRepository cityRepository;
     final private HabitantRepository habitantRepository;
+    private final PlanetRepository planetRepository;
 
 
 
@@ -34,6 +41,16 @@ public class CityService {
                 .filter(byNamekRace)
                 .collect(Collectors.toList());
         return !namekHabitants.isEmpty();}
+
+    public ResponseEntity<List<CityResponse>> findByPlanet(String planetName){
+            return ResponseEntity.ok(CityResponse
+                    .convert(cityRepository
+                            .findCityByPlanetId(planetRepository
+                                    .findById(planetName)
+                                    .get())));
+        }
+
+
 
 
 }

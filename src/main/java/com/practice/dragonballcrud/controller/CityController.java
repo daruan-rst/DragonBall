@@ -60,11 +60,7 @@ public class CityController {
     @GetMapping("/find-by-planet/{planetName}")
     public ResponseEntity<List<CityResponse>> findByPlanet(@RequestParam String planetName){
         try {
-            return ResponseEntity.ok(CityResponse
-                    .convert(cityReposiory
-                    .findCityByPlanetId(planetRepository
-                            .findById(planetName)
-                            .get())));
+            return cityService.findByPlanet(planetName);
         }catch(ParamNotFoundException e){
             return ResponseEntity.badRequest().build();
         }
@@ -88,6 +84,7 @@ public class CityController {
         cityReposiory.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
 
     @DeleteMapping("/destroy-city/{id}")
     public ResponseEntity<CityResponse> destroyCity(@PathVariable int id){
