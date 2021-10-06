@@ -43,19 +43,4 @@ class CityTest {
         Assertions.assertEquals(city.getCityName(),city.getCityName());
     }
 
-    @Test
-    void getPopulation() {
-    }
-
-    @Test
-    void getLongitude() {
-    }
-
-    @Test
-    void getLatitude() {
-    }
-
-    @Test
-    void getPlanetId() {
-    }
 }
