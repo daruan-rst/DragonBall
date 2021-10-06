@@ -16,4 +16,6 @@ public interface HabitantRepository extends JpaRepository<Habitant, Integer> {
     Habitant findById(int id);
     List<Habitant> findHabitantsByName(String name);
     List<Habitant> findHabitantsByCityId(City cityId);
+    void deleteAllByCityId(City cityId);
+
 }

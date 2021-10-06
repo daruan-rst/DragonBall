@@ -9,6 +9,7 @@ import com.practice.dragonballcrud.request.PlanetRequest;
 import com.practice.dragonballcrud.response.PlanetResponse;
 import com.practice.dragonballcrud.service.PlanetService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/planets")
 public class PlanetController {
 
-    final private PlanetRepository planetRepository;
+    @Autowired
     final private PlanetService planetService;
 
     @PostMapping
@@ -30,8 +31,7 @@ public class PlanetController {
             @RequestBody PlanetRequest planetRequest,
             UriComponentsBuilder uriComponentsBuilder
     ) {
-        Planet createdPlanet = planetRequest.convert();
-        planetRepository.save(createdPlanet);
+        Planet createdPlanet = planetService.createPlanet(planetRequest);
         URI uri = uriComponentsBuilder.path("/planet/{planetName}")
                 .buildAndExpand(createdPlanet.getPlanetName()).toUri();
     return ResponseEntity.created(uri).body(new PlanetResponse(createdPlanet));}
@@ -39,39 +39,30 @@ public class PlanetController {
 
     @GetMapping("/find-all")
     public ResponseEntity<List<PlanetResponse>> findAll(){
-        List<Planet> allPlanets = planetRepository.findAll();
-        return ResponseEntity.ok(PlanetResponse.convert(allPlanets));
+    return ResponseEntity.ok(PlanetResponse.convert(planetService.findAll()));
     }
 
     @GetMapping("/has-dragonBall")
     public ResponseEntity<List<PlanetResponse>> hasDragonBall(){
-        List<Planet> planetsHaveDragonBall = planetRepository.findAll()
-                .stream().filter(Planet::isHasDragonBalls)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(PlanetResponse.convert(planetsHaveDragonBall));
+        return ResponseEntity.ok(PlanetResponse.convert(planetService.hasDragonBalls()));
     }
 
 
     @GetMapping("/has-population-greater-than/{population}")
     public ResponseEntity<List<PlanetResponse>> hasPopulationGreaterThan(@PathVariable long population){
-        List<Planet> planets = planetRepository.findPlanetByPlanetPopulationGreaterThan(population);
-        return ResponseEntity.ok(PlanetResponse.convert(planets));
+    return ResponseEntity.ok(PlanetResponse.convert(planetService.hasPopulationGreaterThan(population)));
     }
 
     @PutMapping("/update/{planetName}")
     public ResponseEntity<PlanetResponse> update(
             @PathVariable String planetName,
             @RequestBody PlanetRequest planetRequest){
-        Planet updatedPlanet = planetRequest.updateConvert(planetName);
-        planetRepository.save(updatedPlanet);
-        return ResponseEntity.ok(new PlanetResponse(updatedPlanet));
+        return ResponseEntity.ok(new PlanetResponse(planetService.update(planetName, planetRequest)));
     }
 
     @DeleteMapping("remove/{planetName}")
     public ResponseEntity<PlanetResponse> remove(@RequestParam String planetName){
-        planetRepository.deleteById(planetName);
+        planetService.remove(planetName);
         return ResponseEntity.ok().build();}
-
-
 
 }
