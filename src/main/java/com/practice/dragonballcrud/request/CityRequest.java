@@ -4,6 +4,7 @@ import com.practice.dragonballcrud.entities.City;
 import com.practice.dragonballcrud.entities.DestroyedCity;
 import com.practice.dragonballcrud.entities.Planet;
 import com.practice.dragonballcrud.repository.PlanetRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class CityRequest {
 
     private int id;
