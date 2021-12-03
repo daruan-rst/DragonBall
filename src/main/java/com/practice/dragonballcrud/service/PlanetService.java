@@ -17,9 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class PlanetService {
 
-
     final private CityRepository cityRepository;
-
 
     final private PlanetRepository planetRepository;
 

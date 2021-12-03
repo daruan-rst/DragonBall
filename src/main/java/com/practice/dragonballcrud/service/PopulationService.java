@@ -10,7 +10,6 @@ import com.practice.dragonballcrud.repository.HabitantRepository;
 import com.practice.dragonballcrud.repository.PlanetRepository;
 import com.practice.dragonballcrud.request.HabitantRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,19 +19,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PopulationService {
 
-    @Autowired
     private final HabitantRepository habitantRepository;
 
-    @Autowired
     private final CityRepository cityRepository;
 
-    @Autowired
     private final PlanetRepository planetRepository;
 
     private final PlanetService planetService;
+
     private final CityService cityService;
-
-
 
     public Habitant createHabitant(HabitantRequest habitantRequest){
         Habitant createdHabitant = habitantRequest.convert(cityRepository);

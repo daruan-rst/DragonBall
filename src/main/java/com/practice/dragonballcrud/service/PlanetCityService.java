@@ -19,16 +19,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PlanetCityService {
 
-    final private CityRepository cityRepository;
-
-
     final private HabitantRepository habitantRepository;
-
 
     private final PlanetRepository planetRepository;
 
-
-    private final DestroyedCityRepository destroyedCityRepository;
 
     public boolean doesThisCityHaveAtLeastOneNamek(City city){
         List<Habitant> cityHabitants = habitantRepository.findHabitantsByCityId(city);

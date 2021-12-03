@@ -25,12 +25,9 @@ public class CityService {
 
     final private CityRepository cityRepository;
 
-
     final private HabitantRepository habitantRepository;
 
-
     private final PlanetRepository planetRepository;
-
 
     private final DestroyedCityRepository destroyedCityRepository;
 

@@ -16,13 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DestroyedCityService {
 
-    @Autowired
     private final DestroyedCityRepository destroyedCityRepository;
 
-    @Autowired
     private final CityRepository cityRepository;
 
-    private PlanetService planetService;
+    private final PlanetService planetService;
 
     public List<DestroyedCity> findAll(){
         return destroyedCityRepository.findAll();
@@ -34,6 +32,7 @@ public class DestroyedCityService {
 
     public void wishForCityBack(int id){
         DestroyedCity onceDestroyedCity = destroyedCityRepository.findById(id).get();
+
         if(planetService.aWishIsPossible(onceDestroyedCity.getPlanet())){
             City rebornCity = CityRequest.destroyedCityConvert(onceDestroyedCity);
             cityRepository.save(rebornCity);
