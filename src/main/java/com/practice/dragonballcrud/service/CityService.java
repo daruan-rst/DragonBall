@@ -13,6 +13,7 @@ import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.request.DestroyedCityRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -33,6 +34,7 @@ public class CityService {
 
     private final PlanetCityService planetService;
 
+    @Transactional
     public City createCity(CityRequest cityRequest){
         City city = cityRequest.convert(planetRepository);
         cityRepository.save(city);
