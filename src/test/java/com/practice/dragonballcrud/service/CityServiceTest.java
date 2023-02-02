@@ -6,16 +6,17 @@ import com.practice.dragonballcrud.repository.CityRepository;
 import com.practice.dragonballcrud.repository.DestroyedCityRepository;
 import com.practice.dragonballcrud.request.CityRequest;
 import com.practice.dragonballcrud.request.PlanetRequest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
+@DirtiesContext
 class CityServiceTest {
 
     @Autowired
@@ -45,12 +46,8 @@ class CityServiceTest {
                         new CityRequest(2, "secondTestName", 5L, 1f, 1f, "Earth"));
     }
 
-    @AfterEach
-    void dropDown() {
-        cityRepository.deleteAll();
-    }
-
     @Test
+    @DirtiesContext
     void testCreateCity() {
         City testCity = cityService
                 .createCity(
